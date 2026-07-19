@@ -1,0 +1,32 @@
+name: generate-release
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: get tag name
+        id: vars
+        run: |
+          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          echo "repo=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUT
+
+      - name: building release on ${{ vars.BUILD_SSH_HOST }}
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          RELEASE_TAG: ${{ steps.vars.outputs.tag }}
+          REPO_ID: ${{ steps.vars.outputs.repo }}
+          APP_ID: imap-delete
+        with:
+          host: ${{ vars.BUILD_SSH_HOST }}
+          username: ${{ secrets.BUILD_SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          envs: RELEASE_TAG,REPO_ID,APP_ID
+          script: |
+            echo "connected to ${{ vars.BUILD_SSH_HOST }}"
+            /usr/local/bin/go-build
