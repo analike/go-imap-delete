@@ -1,0 +1,26 @@
+timeout:
+  connect: 10 # seconds
+  command: 30 #seconds
+  delay: 300 # milliseconds to arbitrarily wait between iterations for monitoring
+mailboxes:
+  project-1:
+    host: mx.project-1.com",
+    port: 993
+    secure: true
+    auth:
+      user: me@project-1.com
+      pass: xxx111222333
+  personal:
+    host: imap.personal.com
+    port: 993
+    secure: true
+    auth:
+      user: me@personal.com
+      pass: 'yyy22233334444'
+  work:
+    host: imap.work.com
+    port: 993
+    secure: true
+    auth:
+      user: team@work.com
+      pass: 'zzz33344445555'
